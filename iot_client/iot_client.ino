@@ -1,30 +1,28 @@
-#include <WiFiServerSecure.h>
-#include <WiFiClientSecureAxTLS.h>
-#include <ESP8266WiFiSTA.h>
 #include <ESP8266WiFi.h>
-#include <CertStoreBearSSL.h>
-#include <ESP8266WiFiScan.h>
-#include <WiFiServer.h>
-#include <ESP8266WiFiGeneric.h>
-#include <WiFiClientSecure.h>
-#include <BearSSLHelpers.h>
-#include <ESP8266WiFiType.h>
-#include <WiFiClientSecureBearSSL.h>
-#include <WiFiServerSecureAxTLS.h>
-#include <WiFiServerSecureBearSSL.h>
 #include <WiFiClient.h>
-#include <WiFiUdp.h>
-#include <ESP8266WiFiMulti.h>
-#include <ESP8266WiFiAP.h>
+#include <enums.h> // PRECISA CRIAR LINK SIMBOLICO DA PASTA COMMON PARA A PASTA LIBRARIES DO ARDUINO
 
 
 char* SSID = "house_lacouth";
 char* PASS = "TrialByCombat";
 
 char* host = "192.168.15.80"; 
-int   port = 8000;    
+int   port = 8000;
+
+String key = "sala";
 
 WiFiClient client;
+
+TYPE type = DEVICE;
+
+void handshake(){
+  client.print(type);
+  client.print(key);
+  int msg;
+  do{
+    msg = client.readStringUntil('\n').toInt();
+  }while(msg!=START);
+}
 
 void setup() {
   
@@ -38,12 +36,13 @@ void setup() {
       delay(500);
       Serial.println("Tentando conexão com o servidor...");
     }
-  
+
+  handshake();
 
 }
 
 void loop() {
-  auto valor = String(random(300));
+  auto valor = String(random(1000,3000));
   client.print(valor);
   Serial.println(valor);
 //  while(client.available()){

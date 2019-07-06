@@ -74,16 +74,17 @@ string MyTcpServer::receiveMessage()
 
 void MyTcpServer::threadClient(void *psockfd)
 {
-    char msgServer[MAX_MSG] = {'\0'};
     int sockfd = *(int *)psockfd;
     try
     {
-        while (recv(sockfd, msgServer, sizeof(msgServer), 0) > 0)
-        {   
-            string key = "Cliente_" + to_string(sockfd);
-            dados[key].push_back(stoi(msgServer));
-            cout << key << " - " << msgServer << endl;
+        Protocol protocol(sockfd);
+
+        protocol.handshake();
+
+        if (protocol.getType()==DEVICE){
+            protocol.deviceCommunication(dados);
         }
+
         throw "Erro na recepção da mensagem!";
     }
     catch (char const* erro)

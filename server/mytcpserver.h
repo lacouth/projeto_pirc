@@ -9,11 +9,12 @@
 #include <map>
 #include <vector>
 
-#define MAX_MSG 1024
+#include "protocol.h"
 
 using namespace std;
 
 static map<string,vector<int>> dados;
+
 class MyTcpServer
 {
 private:
@@ -31,11 +32,7 @@ public:
     int acceptConnection();
     string receiveMessage();
     static void getData();
-    
-
     static void threadClient(void *psockfd);
-
-
 };
 
 #endif // !MyTcpServer_H

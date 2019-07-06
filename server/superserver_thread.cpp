@@ -13,10 +13,12 @@ void terminateServer(int signum){};
 
 int main(){
 
+/*------------ codigo que permite o CTRL+C durante o accept ------*/
     struct sigaction sa;
     memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = terminateServer;
 	sigaction(SIGINT, &sa, NULL);
+/*-------------------------------------------------------------------*/
 
 
     MyTcpServer server(SERVER_TCP_PORT);
