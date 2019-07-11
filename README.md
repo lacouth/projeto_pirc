@@ -21,5 +21,5 @@
 
 ​	Segue abaixo uma esquematização do projeto proposto: </div>
 
-![undefined (1)](/home/borserog/Downloads/undefined (1).png)
+![scheme](scheme.png)
 
