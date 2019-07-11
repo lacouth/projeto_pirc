@@ -11,13 +11,31 @@
 class Connection : public QObject
 {
     Q_OBJECT
+
+    Q_PROPERTY(QString connStatus READ connStatus WRITE setConnStatus NOTIFY connStatusChanged)
+
     QTcpSocket *tcpSocket = nullptr;
-    QDataStream out;
+    QDataStream server;
+    QString _connStatus;
 
 public:
+
     Connection(QObject *parent = nullptr);
     void dataReceived();
-    Q_INVOKABLE void conectarServidor(QString server_add, QString port);
+
+    QString connStatus(){
+        return _connStatus;
+    }
+
+    void setConnStatus(QString s){
+        _connStatus = s;
+    }
+
+     Q_INVOKABLE void conectarServidor(QString server_add, QString port);
+signals:
+    void connStatusChanged();
+
+
 };
 
 #endif // CONNECTION_H

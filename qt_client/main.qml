@@ -10,9 +10,14 @@ Window {
     width: 640
     height: 480
     title: "Cliente local"
+    Component.onCompleted: {
+        lb_status: connection.connStatus
+    }
+
     Connection{
         id: connection
     }
+
 
     Column {
         id: column
@@ -35,7 +40,7 @@ Window {
 
             TextField {
                 id: server_addr
-                text: qsTr("")
+                text: qsTr("192.168.15.80")
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -47,7 +52,7 @@ Window {
 
             TextField {
                 id: server_port
-                text: qsTr("")
+                text: qsTr("8000")
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -72,10 +77,10 @@ Window {
                 anchors.verticalCenter: parent.verticalCenter
             }
             Label {
-                id: label3
+                id: lb_status
                 width: 70
                 height: 17
-                text: qsTr("Desconectado")
+
                 anchors.verticalCenter: parent.verticalCenter
             }
 

@@ -9,7 +9,10 @@ enum TYPE{
 };
 
 enum MESSAGE{
-    START
+    START,
+    GETDEVICES
 };
+
+
 
 #endif

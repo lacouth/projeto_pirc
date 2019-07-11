@@ -26,6 +26,7 @@ public:
     TYPE getType();
 
     void deviceCommunication(map<string,vector<int>> &dados);
+    void userCommunication(map<string,vector<int>> &dados);
 
 
 };

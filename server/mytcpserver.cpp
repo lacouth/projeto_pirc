@@ -45,7 +45,7 @@ int MyTcpServer::acceptConnection()
         if (client_id < 0)
             throw "Erro na conexão com o cliente\n";
 
-        cout << "Conexão estabelecida" << endl;
+        cout << "Conexão estabelecida " << client_id<<endl;
         return client_id;
     }
     catch (char const* erro)
@@ -80,12 +80,16 @@ void MyTcpServer::threadClient(void *psockfd)
         Protocol protocol(sockfd);
 
         protocol.handshake();
+        if (protocol.getType() == TYPE::DEVICE){
 
-        if (protocol.getType()==DEVICE){
+            cout << "Dispositivo conectado!\n";
             protocol.deviceCommunication(dados);
-        }
 
-        throw "Erro na recepção da mensagem!";
+        }else if(protocol.getType() == TYPE::USER){
+            
+            cout << "Usuário conectado!\n";
+            protocol.userCommunication(dados);
+        }else throw "Erro na recepção da mensagem!";
     }
     catch (char const* erro)
     {

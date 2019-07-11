@@ -9,7 +9,7 @@ char* PASS = "TrialByCombat";
 char* host = "192.168.15.80"; 
 int   port = 8000;
 
-String key = "sala";
+String key = "varanda";
 
 WiFiClient client;
 
@@ -37,12 +37,12 @@ void setup() {
       Serial.println("Tentando conexão com o servidor...");
     }
 
-  handshake();
+ client.print(key);
 
 }
 
 void loop() {
-  auto valor = String(random(1000,3000));
+  auto valor = String(random(300));
   client.print(valor);
   Serial.println(valor);
 //  while(client.available()){
