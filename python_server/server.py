@@ -9,6 +9,26 @@ from flask import Flask, render_template, redirect, request
 
 app = Flask(__name__)
 
+class Cliente:
+    def setId(self, id):
+        self.id = id
+    def setNsense(self,nsense):
+        self.nsense = nsense
+
+def protocolo(cliente, conn, msg,dados):
+    if(msg[0] == "IAM"):
+        
+        cliente.setId(msg[1])
+        sendOK(conn)
+    elif(msg[0] == "SNS"):
+        cliente.setNsense(msg[1])
+        sendOK(conn)
+    elif(msg[0]== "MEAS"):
+        
+        dados.setdefault(cliente.id,[]).append(int(msg[1])) 
+
+
+
 def servidor_tcp():
     HOST = ''  
     PORT = 8000
@@ -21,15 +41,23 @@ def servidor_tcp():
             t.append(threading.Thread(target=cliente_connectado,args=(conn,addr)))
             t[-1].start()
 
+def sendOK(conn):
+    conn.sendall("+OK".encode())
+
+def waitMessage(conn):
+    return str(conn.recv(1024).decode("utf-8")).split()
+
+
 def cliente_connectado(conn,addr):
     with conn:
-        print('Connected by', addr)
-        id = str(conn.recv(1024))
+        cliente = Cliente()
+        print('Connected by', addr) 
         while True:
-            data = int(conn.recv(1024))
-            dados.setdefault(id,[]).append(data) 
-            if not data:
-                break
+            print(dados)
+            data = waitMessage(conn)
+            protocolo(cliente, conn, data,dados)
+            
+            
 
 @app.route("/")
 def rota_inicial():
