@@ -75,6 +75,6 @@ Para os casos de mensagens inválidas ou algum tipo de falha de comunicação o 
 
 O servidor foi desenvolvido de forma a permiter além do acesso CLI um acesso WEB das funcionalidades do servidor. A figura abaixo mostra uma tela do protótipo.
 
-![prototipo](prototipo-web.png)
+![prototipo](prototipo_web.png)
 
 
