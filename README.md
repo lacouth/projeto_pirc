@@ -23,3 +23,45 @@
 
 ![scheme](scheme.png)
 
+## O Protocolo de comunicação
+
+Para a comunicação entre os dispositivos IoT, o servidor e o clientes foi necessário desenvolver um protocolo de mensagens trocadas através de uma conexão _socket_ tcp. A descrição das mensagens é descrita abaixo.
+
+### O _handshake_ IoT
+
+Quando um dispositivo IoT se conecta ao servidor ele precisa informa ao servidor qual a sua identificação e quantos sensores ele possui, esse passo foi denominado de _handshake_ é foi implementado na ordem descrita abaixo:
+
+MENSAGEM | DESCRIÇÃO  
+---------|-----------
+IAM [nome-identificador]| Enviado do IoT para servidor com o seu identificador.
++OK | Resposta do servidor indicando a disponibilidade do identificador.
+SNS [valor-inteiro] | Enviado pelo IoT indicando quantos sensores ele possui.
++OK | Resposta de confirmação do servidor.
+
+### O fluxo de dados medidos
+
+Após o _handshake_ o dispositivo IoT passa a enviar os dados da sua medição utilizando a mensagem abaixo.
+
+MENSAGEM | DESCRIÇÃO
+--------|-----------
+MEAS [valor-medido] | Mensagem enviada para o servidor contendo o valor medido pelo dispositivo
+
+### O acesso aos dados medidos pelo cliente
+
+O cliente é capaz de acessar os dados que o servidor possui através das mensagens descritas abaixo:
+
+MENSAGEM | DESCRIÇÃO
+---------|----------
+DEVLST | Requisita ao servidor a lista de dispositivos atualmente conectados.
++ID [identificador-iot] | Resposta do servidor ao comando DEVLST. Caso mais de um disposito estejam conectados as respostas são concatenadas em uma única mensagem.
+GETMEAS [identificador-iot] | Requisita ao servidor o último valor medido pelo [identificador-iot].
++DATA [valor-medido] | Resposta a requisão feita pelo comando GETMEAS.
+
+### Manipulação do dispositivo IoT pelo cliente
+
+Nos protótipos desenvolvidos neste projeto, cada dispositivo IoT possui um _led_ que pode ser manipulado pelo cliente de acordo com o fluxo de mensagens abaixo.
+
+MENSAGEM | DESCRIÇÃO
+---------|----------
+TURN [identificador-iot]
+
