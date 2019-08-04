@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app" class="container-fluid" >
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">IOT-PIRC 2019.1</a>
+        </nav>
+        <div class="container-fluid" style="display: flex; justify-content: center; margin:1rem auto;">
+            <div v-for="(value,key) in dados" class="card" style="width: 18rem; margin:1rem 1rem;">
+                <div class="card-header">
+                    <h3>[[key]]</h3>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">[[ value[value.length - 1] ]]</h3>
+                    <button type="button" class="btn btn-primary" v-on:click="ligar([[key]])">Ligar</button>
+                    <button type="button" class="btn btn-danger" v-on:click="desligar([[key]])">Desligar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io.connect('http://' + document.domain + ':' + location.port, { transports: ['websocket'] });
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello Vue!',
+                dados: []
+            },
+            methods: {
+                ligar: function (key) {
+                    socket.emit("ligar", key[0][0])
+                },
+                desligar: function (key) {
+                    socket.emit("desligar", key[0][0])
+                }
+            },
+            created() {
+                socket.on('atualiza', data => {
+                    this.dados = (JSON.parse(data))
+                    console.log(this.dados)
+                });
+            },
+            delimiters: ['[[', ']]']
+        })
+
+
+    </script>
+</body>
+
+</html>

@@ -16,13 +16,11 @@ char* SSID = "house_lacouth";
 char* PASS = "TrialByCombat";
 
 char* host = "192.168.0.153"; 
-int   port = 8000;
+int   port = 65432;
 
-String id = "sala";
+String id = "LUMI";
 
 WiFiClient client;
-
-//TYPE type = DEVICE;
 
 void waitForOk(){
     String msg;
