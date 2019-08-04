@@ -4,19 +4,8 @@ import socket
 import threading
 import time
 import json
-
-from flask import Flask, render_template, redirect, request
-from flask_socketio import SocketIO, emit
-from flask_cors import CORS
-import eventlet 
-
-eventlet.monkey_patch() 
-
-app = Flask(__name__)
-socketio = SocketIO(app)
-# socketio = SocketIO(app,async_mode = 'eventlet')
-#socketio = SocketIO(app, message_queue='redis://')
-CORS(app)
+import requests
+import time
 
 class Cliente:
     def setId(self, id):
@@ -28,24 +17,26 @@ def protocolo(cliente, conn, msg,dados):
     if(msg[0] == "IAM"):   
         cliente.setId(msg[1])
         sendOK(conn)
+        conexoes[cliente.id] = conn
     elif(msg[0] == "SNS"):
         cliente.setNsense(msg[1])
         sendOK(conn)
     elif(msg[0]== "MEAS"):
-        if int(msg[1]):  
-            # dados.setdefault(cliente.id,[]).append(int(msg[1]))
-            dados[cliente.id] = int(msg[1])
-        print(dados)
-
-
+        try:
+            if int(msg[1]):  
+                dados.setdefault(cliente.id,[]).append(int(msg[1]))
+                requests.post(WEB_SERVER+"/upload",json=json.dumps(dados))
+        except:
+            print("Erro de comunicação")
 
 def servidor_tcp():
     HOST = ''  
-    PORT = 8888
+    PORT = 8000
     t = []
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind((HOST, PORT))
         s.listen()
+        
         while True:
             conn, addr = s.accept()
             t.append(threading.Thread(target=cliente_connectado,args=(conn,addr)))
@@ -57,32 +48,36 @@ def sendFrq(conn,valor):
 def sendOK(conn):
     conn.sendall("+OK".encode())
 
+def sendLED(conn, led_estado):
+    conn.sendall(("+LED "+str(led_estado)).encode())
+
 def waitMessage(conn):
     return str(conn.recv(1024).decode("utf-8")).split()
-
 
 def cliente_connectado(conn,addr):
     with conn:
         cliente = Cliente()
-        print('Connected by', addr) 
+        print('Conexão com ', addr) 
         while True:
             data = waitMessage(conn)
             protocolo(cliente, conn, data,dados)
-            print(data)
-            
-            
 
-@app.route("/")
-def rota_inicial():
-    return render_template("index.html", dados = dados)
+def verifica_estado():
+    while(True):
+        r = requests.get(WEB_SERVER+"/get_estado")
+        estado = r.json()
+        for id in estado:
+            if id in conexoes:
+                sendLED(conexoes[id],estado[id])
+        
+        # time.sleep(2)
 
-@app.route("/get")
-def rota_getDados():
-    return json.dumps(dados[])
+            
 
 if __name__ == "__main__":
+    WEB_SERVER = "http://192.168.0.153:8080"
     dados = {}
-    s = threading.Thread(target=servidor_tcp)
+    conexoes = {}
+    s = threading.Thread(target=verifica_estado)
     s.start()
-    app.run("0.0.0.0",port=8080)  
-    # socketio.run(app)
+    servidor_tcp()

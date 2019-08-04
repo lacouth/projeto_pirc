@@ -1,6 +1,5 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
-#define MAX_CHAR 1024
 //---------------Mensagens da aplicação-------------------
 
 const String IAM = "IAM ";
@@ -10,22 +9,16 @@ const String MEAS = "MEAS ";
 
 const String OKK = "+OK";
 
-//----------------- Variáveis Globais-------------------
-
-int DELAY = 1000;
-char recv_msg[MAX_CHAR];
-
-
-//------------------------------------------------------
+//--------------------------------------------------------
 
 
 char* SSID = "house_lacouth";
 char* PASS = "TrialByCombat";
 
-char* host = "192.168.15.9"; 
-int   port = 8888;
+char* host = "192.168.0.153"; 
+int   port = 8000;
 
-String id = "varanda";
+String id = "sala";
 
 WiFiClient client;
 
@@ -42,19 +35,32 @@ void waitForOk(){
 void handshake(){
   String msg;
   client.print(IAM + id);
+  Serial.println("\n oi");
+  
   waitForOk();
   client.print(SNS + "1");
   waitForOk();
   
 }
 
+void protocolo(String cmd){
+  if(cmd.indexOf("+LED 1") >= 0){
+    Serial.println("ligar");
+    digitalWrite(D1,HIGH);
+  }else if(cmd.indexOf("+LED 0") >= 0){
+    Serial.println("desligar");
+    digitalWrite(D1,LOW);
+  }
+}
+
 void setup() {
   
   Serial.begin(115200);
-  WiFi.begin(SSID, PASS);    
+  WiFi.begin(SSID, PASS); 
+  pinMode(D1, OUTPUT);   
   while (WiFi.status() != WL_CONNECTED) {  
     delay(1000);
-    Serial.println(WiFi.status());
+    Serial.println(WiFi.localIP());
   }
   while(!client.connect(host, port)){
       delay(500);
@@ -64,24 +70,14 @@ void setup() {
   handshake();
 }
 
-void protocolo(String mensagem){
-  Serial.println(mensagem);
-  char *command;
-  mensagem.toCharArray(recv_msg,MAX_CHAR);
-  command = strtok(recv_msg," ");
-  if(!strcmp(command,"FRQ")){
-    command = strtok(NULL," ");
-    DELAY = atoi(command);
-    }
-  }
-
 void loop() {
-  auto valor = String(random(300));
-  client.println(MEAS + String(valor));
+  int valor = analogRead(A0);
+  client.print(MEAS + String(valor));
   Serial.println(MEAS + String(valor));
-  delay(DELAY);
-  if(client.available() > 0){
-      protocolo(client.readStringUntil('\n'));
+  while(client.available() > 0){
+      String comando = client.readStringUntil('\n');
+      protocolo(comando);
+      Serial.println(comando);
     }
-    
+    delay(1000);
 }
