@@ -46,7 +46,7 @@ MENSAGEM | DESCRIÇÃO
 --------|-----------
 MEAS [valor-medido] | Mensagem enviada para o servidor contendo o valor medido pelo dispositivo
 
-### O acesso aos dados medidos pelo cliente
+### O acesso aos dados medidos pelo cliente (CLI)
 
 O cliente é capaz de acessar os dados que o servidor possui através das mensagens descritas abaixo:
 
@@ -63,5 +63,18 @@ Nos protótipos desenvolvidos neste projeto, cada dispositivo IoT possui um _led
 
 MENSAGEM | DESCRIÇÃO
 ---------|----------
-TURN [identificador-iot]
+TURN [identificador-iot][0-1] | Faz o pedido ao servidor para mudar o estado do _led_ do dispositivo [0-OFF, 1-ON].
++OK | Resposta do servidor indicando a aceitação da requisição.
++LED [0-1] | Mensagem enviada do servidor para o dispositivo IoT com o estado do _led_.
+
+### Mensagem de Erro
+
+Para os casos de mensagens inválidas ou algum tipo de falha de comunicação o servidor retorna sempre a mensagem **+ERROR**
+
+## O WEB Server
+
+O servidor foi desenvolvido de forma a permiter além do acesso CLI um acesso WEB das funcionalidades do servidor. A figura abaixo mostra uma tela do protótipo.
+
+![prototipo](prototipo-web.png)
+
 
