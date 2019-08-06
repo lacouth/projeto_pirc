@@ -11,7 +11,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         msg = input(">> ").upper()
         if(msg == "EXIT"):
             s.close()
-            break
+            exit(0)
         s.sendall(msg.encode())
         data = s.recv(1024)
         print(data.decode('utf-8'))
