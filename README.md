@@ -46,6 +46,10 @@ MENSAGEM | DESCRIÇÃO
 --------|-----------
 MEAS [valor-medido] | Mensagem enviada para o servidor contendo o valor medido pelo dispositivo
 
+Pode-se visualizar o fluxo das mensagens trocadas entre o dispositivo IoT e o Servidor a partir do seguinte diagrama:
+
+![iot-server](IoT-Server.jpg)
+
 ### O acesso aos dados medidos pelo cliente (CLI)
 
 O cliente é capaz de acessar os dados que o servidor possui através das mensagens descritas abaixo:
@@ -56,6 +60,10 @@ DEVLST | Requisita ao servidor a lista de dispositivos atualmente conectados.
 +ID [identificador-iot] | Resposta do servidor ao comando DEVLST. Caso mais de um disposito estejam conectados as respostas são concatenadas em uma única mensagem.
 GETMEAS [identificador-iot] | Requisita ao servidor o último valor medido pelo [identificador-iot].
 +DATA [valor-medido] | Resposta a requisão feita pelo comando GETMEAS.
+
+A troca de dados entre cliente e servidor pode ser visualizada através do seguinte diagrama:
+
+![client-server](Client-Server.jpg)
 
 ### Manipulação do dispositivo IoT pelo cliente
 
