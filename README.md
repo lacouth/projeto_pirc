@@ -48,7 +48,9 @@ MEAS [valor-medido] | Mensagem enviada para o servidor contendo o valor medido p
 
 Pode-se visualizar o fluxo das mensagens trocadas entre o dispositivo IoT e o Servidor a partir do seguinte diagrama:
 
-![iot-server](IoT-Server.jpg)
+<p align="center">
+  <img src="IoT-Server.jpg">
+</p>
 
 ### O acesso aos dados medidos pelo cliente (CLI)
 
@@ -63,7 +65,9 @@ GETMEAS [identificador-iot] | Requisita ao servidor o último valor medido pelo 
 
 A troca de dados entre cliente e servidor pode ser visualizada através do seguinte diagrama:
 
-![client-server](Client-Server.jpg)
+<p align="center">
+  <img src="Client-Server.jpg">
+</p>
 
 ### Manipulação do dispositivo IoT pelo cliente
 
@@ -83,6 +87,8 @@ Para os casos de mensagens inválidas ou algum tipo de falha de comunicação o 
 
 O servidor foi desenvolvido de forma a permiter além do acesso CLI um acesso WEB das funcionalidades do servidor. A figura abaixo mostra uma tela do protótipo.
 
-![prototipo](prototipo_web.png)
+<p align="center">
+  <img src="prototipo_web.png">
+</p>
 
 
