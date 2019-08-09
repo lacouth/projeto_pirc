@@ -70,7 +70,7 @@ MENSAGEM | DESCRIÇÃO
 DEVLST | Requisita ao servidor a lista de dispositivos atualmente conectados.
 +ID [identificador-iot] | Resposta do servidor ao comando DEVLST. Caso mais de um disposito estejam conectados as respostas são concatenadas em uma única mensagem.
 GETMEAS [identificador-iot] | Requisita ao servidor o último valor medido pelo [identificador-iot].
-+DATA [valor-medido] | Resposta a requisão feita pelo comando GETMEAS.
++DATA [valor-medido] | Resposta à requisição feita pelo comando GETMEAS.
 
 A troca de dados entre cliente e servidor pode ser visualizada através do seguinte diagrama:
 
