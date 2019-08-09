@@ -13,15 +13,24 @@
 
 <div style="text-align: justify">
 
-​	Trata-se de um projeto que busca integrar dispositivos IoT com clientes através de um servidor.
+​	Trata-se de um projeto que busca integrar dispositivos IoT (_Internet Of Things_) com clientes através de um servidor.
 
-​	A arquitetura utilizará o protocolo de transporte TCP para viabilizar a comunicação entre sensores e um servidor, e desse servidor com clientes locais. O sensores emitirão informações sobre luminosidade e temperatura que serão repassados dinamicamentes aos clientes que terão acesso a esses dados através de uma página web.
+​	A arquitetura utilizará o protocolo de transporte TCP para viabilizar a comunicação entre microcontroladores e um servidor, e desse servidor com clientes locais. Os microcontroladores emitirão informações sobre diferentes sensores que serão repassados dinamicamentes aos clientes que terão acesso a esses dados através de uma página web.
 
-​	O módulo dos sensores será escrito em C++ enquanto que o módulo do servidor e do cliente será escrito em Python. Servidor e cliente se comunicarão através da aplicação web *Flask* que utiliza o protocolo de aplicação HTTP.	
+​	O módulo dos microcontroladores será escrito em C/C++ enquanto que o módulo do servidor e do cliente será escrito em Python. O servidor e cliente poderam se comunicar através de uma interface CLI ou através de uma aplicação web *Flask* que utiliza o protocolo de aplicação HTTP.	
 
 ​	Segue abaixo uma esquematização do projeto proposto: </div>
 
 ![scheme](scheme.png)
+
+## O protótipo IoT
+
+Os dispositivos IoT para esse projeto foram prototipados utilizando a plataforma NodeMCU para captura e envio de dados diversos como luminosidade, temperatura, umidade e outros. Os protótipos foram idealizados para possuirem um diodo _led_ que fosse possível ser manipulado pelos clientes conectados.
+
+<p align="center">
+  <img src="nodemcu.png">
+</p>
+
 
 ## O Protocolo de comunicação
 
@@ -78,6 +87,10 @@ MENSAGEM | DESCRIÇÃO
 TURN [identificador-iot][0-1] | Faz o pedido ao servidor para mudar o estado do _led_ do dispositivo [0-OFF, 1-ON].
 +OK | Resposta do servidor indicando a aceitação da requisição.
 +LED [0-1] | Mensagem enviada do servidor para o dispositivo IoT com o estado do _led_.
+
+<p align="center">
+  <img src="client-server-iot.png">
+</p>
 
 ### Mensagem de Erro
 
